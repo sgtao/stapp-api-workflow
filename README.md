@@ -1,5 +1,5 @@
 # stapp-api-workflow
-[streamlit](https://streamlit.io/)のアプリでAPIリクエストを発行するワークフローを作ってみる。
+Try to create a workflow to issue API requests in [streamlit](https://streamlit.io/) apps.
 
 ## Usage
 - [poetry cli](https://python-poetry.org/docs/)を利用する
@@ -16,7 +16,7 @@ eval $(poetry env activate) # for poetry 2.x version
 deactivate
 ```
 
-### コマンド一覧
+### Task Commands
 - [pyproject.toml](./pyproject.toml) の `[tool.taskipy.tasks]` 定義より：
 ```sh
 $ task --list
@@ -52,7 +52,7 @@ task check-format
 
 
 ### Test with `pytest`
-- [streamlitのテスト手法](https://docs.streamlit.io/develop/concepts/app-testing/get-started)を参考にテストを実施
+- Refer to [streamlitのテスト手法](https://docs.streamlit.io/develop/concepts/app-testing/get-started)
 ```sh
 # on poetry env
 # pytest tests/test_main.py
@@ -122,21 +122,21 @@ task rm-dist
 ./dist/run_stapp/run_stapp
 ```
 
-## 使用ライブラリ
+## Used Library
 
-このプロジェクトは以下のオープンソースライブラリを使用しています：
+This project use following Open Source Library:
 
 - [Streamlit](https://streamlit.io/) - Apache License 2.0
 
-  Copyright © 2019-2024 Streamlit Inc.
+  Copyright © 2019-2025 Streamlit Inc.
 
-  Streamlitは、データアプリケーションを簡単に作成するためのオープンソースライブラリです。
+  Streamlit is an open source library for easily creating data applications.
 
 
-## ライセンス
+## License
 MIT License
 
-このプロジェクトは MIT ライセンスの下で公開されています。詳細は [LICENSE](./LICENSE) ファイルをご覧ください。
+This project is released under the MIT License. See the [LICENSE](. /LICENSE) file for details.
 
-ただし、このプロジェクトは Apache License 2.0 でライセンスされている Streamlit を使用しています。
-Streamlit のライセンス全文は [こちら](https://github.com/streamlit/streamlit/blob/develop/LICENSE) でご確認いただけます。
+However, this project uses Streamlit, which is licensed under the Apache License 2.0.
+The full Streamlit license can be found [here](https://github.com/streamlit/streamlit/blob/develop/LICENSE).
