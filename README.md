@@ -17,7 +17,7 @@ deactivate
 ```
 
 ### Task Commands
-- [pyproject.toml](./pyproject.toml) の `[tool.taskipy.tasks]` 定義より：
+- task commands is set at `[tool.taskipy.tasks]` in [pyproject.toml](./pyproject.toml):
 ```sh
 $ task --list
 run                 streamlit run src/main.py
