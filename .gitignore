@@ -64,3 +64,6 @@ cover/
 
 dist
 build
+logs
+
+privates

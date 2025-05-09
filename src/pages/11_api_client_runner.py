@@ -3,6 +3,8 @@
 
 import streamlit as st
 
+from functions.AppLogger import AppLogger
+
 APP_TITLE = "API Client Runner"
 
 
@@ -20,6 +22,9 @@ def main():
 
 
 if __name__ == "__main__":
+    app_logger = AppLogger(APP_TITLE)
+    app_logger.app_start()
+
     init_st_session_state()
 
     sidebar()
