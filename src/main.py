@@ -14,5 +14,5 @@ st.page_link(
     icon="🏃",
 )
 st.page_link(
-    "pages/21_logs_viewer.py", label="Go to Log Viewer Page", icon="🏃"
+    "pages/21_logs_viewer.py", label="Go to Log Viewer Page", icon="📄"
 )

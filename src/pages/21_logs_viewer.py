@@ -47,9 +47,9 @@ def rotate_log_file(log_file_path, app_logger):
 
 
 # メイン関数
-def main():
-    app_logger = AppLogger(APP_TITLE)
-    app_logger.app_start()
+def main(app_logger):
+    st.page_link("main.py", label="Back to Home", icon="🏠")
+    st.title(f"📄 {APP_TITLE}")
 
     # ログファイルを選択
     log_files = app_logger.get_log_filelist()
@@ -95,7 +95,7 @@ def main():
 
 
 if __name__ == "__main__":
-    st.page_link("main.py", label="Back to Home", icon="🏠")
-    st.title(f"📄 {APP_TITLE}")
+    app_logger = AppLogger(APP_TITLE)
+    app_logger.app_start()
 
-    main()
+    main(app_logger)
