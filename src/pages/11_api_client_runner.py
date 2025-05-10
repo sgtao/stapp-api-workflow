@@ -5,6 +5,7 @@ import requests
 
 import streamlit as st
 
+from components.SideMenus import SideMenus
 from functions.AppLogger import AppLogger
 
 APP_TITLE = "API Client Runner"
@@ -16,7 +17,8 @@ def init_st_session_state():
 
 
 def sidebar():
-    pass
+    side_menus = SideMenus()
+    side_menus.render_api_client_menu()
 
 
 def main():
@@ -35,7 +37,10 @@ def main():
             expanded=True,
         )
 
-    if "result" in st.session_state.api_configs:
+    if "result" not in st.session_state.api_configs:
+        st.info("Please click the button to get API configs. ")
+    else:
+        # if "result" in st.session_state.api_configs:
         api_config_list = st.session_state.api_configs["result"]
         config = st.selectbox(
             label="Select a config",
@@ -48,8 +53,26 @@ def main():
             expanded=False,
             icon="📝",
         ):
-            st.code(config)
             st.write(config)
+
+        if st.button("Request POST with config"):
+            endpoint_path = "api/v0/service"
+            endpoint = f"http://{endpoint_hostname}/{endpoint_path}"
+            request_body = {
+                "config_file": "assets/001_get_simple_api_test.yaml",
+                # "num_user_inputs": st.session_state.num_inputs,
+                "num_user_inputs": 0,
+                "user_inputs": {},
+            }
+
+            response = requests.post(
+                endpoint,
+                json=request_body,
+            )
+            st.json(
+                response.json(),
+                expanded=True,
+            )
 
 
 if __name__ == "__main__":
