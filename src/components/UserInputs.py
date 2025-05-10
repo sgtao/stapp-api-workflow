@@ -7,7 +7,7 @@ class UserInputs:
         if "user_property_path" not in st.session_state:
             st.session_state.user_property_path = ""
 
-        self.user_property_path = ""
+        self.user_property_path = "."
         # プリセット確認
         if "user_property_path" in st.session_state:
             self.user_property_path = st.session_state.user_property_path

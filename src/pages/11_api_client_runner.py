@@ -5,6 +5,7 @@ import requests
 
 import streamlit as st
 
+from components.ResponseViewer import ResponseViewer
 from components.SideMenus import SideMenus
 from functions.AppLogger import AppLogger
 
@@ -28,6 +29,8 @@ def main():
     st.page_link("main.py", label="Back to Home", icon="🏠")
     st.title(f"🏃 {APP_TITLE}")
 
+    response_viewer = ResponseViewer()
+
     endpoint_hostname = st.text_input(
         label="API Endpoint Hostname", value="localhost:3000"
     )
@@ -36,7 +39,7 @@ def main():
         endpoint = f"http://{endpoint_hostname}/{endpoint_path}"
         st.session_state.api_configs = requests.get(endpoint).json()
         with st.expander(
-            label="##### Response oconfig",
+            label="##### Response config",
             expanded=False,
             icon="📝",
         ):
@@ -54,14 +57,6 @@ def main():
             label="Select a config",
             options=api_config_list,
         )
-
-        st.write("##### Config states")
-        with st.expander(
-            label="##### Config states",
-            expanded=False,
-            icon="📝",
-        ):
-            st.write(config)
 
         if st.button("Request POST with config"):
             endpoint_path = "api/v0/service"
@@ -91,11 +86,10 @@ def main():
                     json=request_body,
                 )
 
-                st.json(
-                    response.json(),
-                    expanded=True,
-                )
-                app_logger.api_success_log(response)
+                if response:
+                    st.subheader("レスポンス")
+                    response_viewer.render_viewer(response)
+                    app_logger.api_success_log(response)
 
             except Exception as e:
                 app_logger.error_log(f"Error: {e}")
