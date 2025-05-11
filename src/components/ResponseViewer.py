@@ -139,6 +139,7 @@ class ResponseViewer:
             self.body_viewer(content_type, response)
 
             if st.session_state.user_property_path != "":
+                # extracted_value = None
                 # 抽出したいプロパティの指定
                 property_path = st.session_state.user_property_path
 
@@ -159,7 +160,16 @@ class ResponseViewer:
                 else:
                     st.warning(f"Extracted Value({property_path}): Not Found!")
 
+                return extracted_value
+            else:
+                return response
+
+        # 例外処理
         except json.JSONDecodeError:
             st.text(response.text)  # テキスト形式の場合
         except TypeError:
             st.error("プロパティの型が想定と異なります。")
+        except Exception as e:
+            st.error(f"レスポンスの表示中にエラーが発生しました: {str(e)}")
+        # finally:
+        #     return None

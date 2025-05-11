@@ -15,8 +15,9 @@ class ActionsViewer:
         self,
         endpoint="http://xxx",
         method="POST",
-        request_body={},
+        request_body=None,
         response_path="",
+        response=None,
     ):
         # APIアクションをセッションステートに追加
         name = f"action_{len(st.session_state.api_actions) + 1:02d}_"
@@ -33,9 +34,14 @@ class ActionsViewer:
         action_info = {
             "endpoint": endpoint,
             "method": method,
-            "request_body": request_body,
-            "response_path": response_path,
         }
+        if request_body is not None:
+            action_info["request_body"] = request_body
+        if response_path != "":
+            action_info["response_path"] = response_path
+        if response is not None:
+            action_info["response"] = response
+
         st.session_state.api_actions.append(
             {
                 "key": name,

@@ -94,15 +94,19 @@ def main():
 
                 if st.session_state.response:
                     st.subheader("レスポンス")
-                    response_viewer.render_viewer(st.session_state.response)
+                    shown_response = response_viewer.render_viewer(
+                        st.session_state.response
+                    )
                     app_logger.api_success_log(st.session_state.response)
 
                     # APIアクションをセッションステートに追加
+                    # print(shown_response)
                     actions_viewer.add_action(
                         endpoint=endpoint,
                         method="POST",
                         request_body=request_body,
                         response_path=st.session_state.user_property_path,
+                        response=shown_response,
                     )
                     st.success("Action added successfully.")
 
