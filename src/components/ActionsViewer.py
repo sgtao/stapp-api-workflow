@@ -55,7 +55,7 @@ class ActionsViewer:
     def render_actions(self):
         # st.session_state.hl_runner の内容を表示
         if len(st.session_state.api_actions) == 0:
-            st.info("Action情報がありません。")
+            st.warning("Action情報がありません。")
             return
 
         st.info("Registerd Action Info:")

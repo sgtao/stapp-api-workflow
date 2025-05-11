@@ -1,7 +1,7 @@
 # api_config_client.py
 import requests
 
-# import yaml
+import time
 
 import streamlit as st
 
@@ -42,15 +42,15 @@ def main():
     if st.button("Get API configs"):
         endpoint = f"http://{endpoint_hostname}/{endpoint_path}"
         st.session_state.api_configs = requests.get(endpoint).json()
-        with st.expander(
-            label="##### Response config",
-            expanded=False,
-            icon="📝",
-        ):
-            st.json(
-                st.session_state.api_configs,
-                expanded=True,
-            )
+        # with st.expander(
+        #     label="##### Response config",
+        #     expanded=False,
+        #     icon="📝",
+        # ):
+        #     st.json(
+        #         st.session_state.api_configs,
+        #         expanded=True,
+        #     )
 
     if "result" not in st.session_state.api_configs:
         st.warning("Please click the button to get API configs. ")
@@ -61,6 +61,48 @@ def main():
             label="Select a config",
             options=api_config_list,
         )
+
+        if st.button(
+            label="Get config info",
+            type="secondary",
+            help="選択したAPI configの情報を取得します",
+            disabled=st.session_state.api_running,
+        ):
+            try:
+                st.session_state.api_running = True
+                endpoint_path = "api/v0/config-title"
+                endpoint = f"http://{endpoint_hostname}/{endpoint_path}"
+                request_body = {
+                    "config_file": st.session_state.selected_config,
+                }
+                app_logger.api_start_log(
+                    url=endpoint,
+                    method="POST",
+                    body=request_body,
+                )
+                response = requests.post(
+                    endpoint,
+                    json=request_body,
+                )
+
+                if response:
+                    # ステータスコードチェック
+                    response.raise_for_status()
+
+                    app_logger.api_success_log(response)
+                    result = response.json()["result"]
+                    st.info(
+                        f"""
+                        #### Config `{st.session_state.selected_config}`:
+                        - Title+Note: {result}
+                        """
+                    )
+            except Exception as e:
+                app_logger.error_log(f"Error: {e}")
+                st.error(f"Error: {e}")
+                time.sleep(3)
+            finally:
+                st.session_state.api_running = False
 
         if st.button(
             label="Request POST with config",
@@ -97,6 +139,9 @@ def main():
                 )
 
                 if response:
+                    # ステータスコードチェック
+                    response.raise_for_status()
+
                     st.subheader("レスポンス")
                     shown_response = response_viewer.render_viewer(response)
                     app_logger.api_success_log(response)
@@ -115,6 +160,7 @@ def main():
             except Exception as e:
                 app_logger.error_log(f"Error: {e}")
                 st.error(f"Error: {e}")
+                time.sleep(3)
             finally:
                 st.session_state.api_running = False
 
