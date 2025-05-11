@@ -18,8 +18,6 @@ def init_st_session_state():
         st.session_state.api_configs = []
     if "selected_config" not in st.session_state:
         st.session_state.selected_config = ""
-    if "response" not in st.session_state:
-        st.session_state.response = {}
 
 
 def sidebar():
@@ -64,7 +62,13 @@ def main():
             options=api_config_list,
         )
 
-        if st.button("Request POST with config", type="primary"):
+        if st.button(
+            label="Request POST with config",
+            type="primary",
+            help="POSTリクエストを送信します",
+            disabled=st.session_state.api_running,
+        ):
+            st.session_state.api_running = True
             endpoint_path = "api/v0/service"
             endpoint = f"http://{endpoint_hostname}/{endpoint_path}"
             request_body = {
@@ -87,17 +91,15 @@ def main():
                     method="POST",
                     body=request_body,
                 )
-                st.session_state.response = requests.post(
+                response = requests.post(
                     endpoint,
                     json=request_body,
                 )
 
-                if st.session_state.response:
+                if response:
                     st.subheader("レスポンス")
-                    shown_response = response_viewer.render_viewer(
-                        st.session_state.response
-                    )
-                    app_logger.api_success_log(st.session_state.response)
+                    shown_response = response_viewer.render_viewer(response)
+                    app_logger.api_success_log(response)
 
                     # APIアクションをセッションステートに追加
                     # print(shown_response)
@@ -113,6 +115,8 @@ def main():
             except Exception as e:
                 app_logger.error_log(f"Error: {e}")
                 st.error(f"Error: {e}")
+            finally:
+                st.session_state.api_running = False
 
     # APIアクションの表示
     actions_viewer.render_actions()
