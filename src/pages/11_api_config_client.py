@@ -1,4 +1,4 @@
-# api_client_runner.py
+# api_config_client.py
 import requests
 
 # import yaml
@@ -10,7 +10,7 @@ from components.ResponseViewer import ResponseViewer
 from components.SideMenus import SideMenus
 from functions.AppLogger import AppLogger
 
-APP_TITLE = "API Client Runner"
+APP_TITLE = "API Config Client"
 
 
 def init_st_session_state():
@@ -30,7 +30,7 @@ def main():
     app_logger.app_start()
 
     st.page_link("main.py", label="Back to Home", icon="🏠")
-    st.title(f"🏃 {APP_TITLE}")
+    st.title(f"🔧 {APP_TITLE}")
 
     response_viewer = ResponseViewer()
     actions_viewer = ActionsViewer()
